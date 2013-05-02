@@ -27,6 +27,8 @@ namespace DapperExtensions.Mapper
         {
             PropertyInfo = propertyInfo;
             ColumnName = PropertyInfo.Name;
+
+            IgnoreIfMarked();
         }
 
         /// <summary>
@@ -70,6 +72,19 @@ namespace DapperExtensions.Mapper
         {
             ColumnName = columnName;
             return this;
+        }
+
+        //CF
+        public void IgnoreIfMarked()
+        {
+            if (PropertyInfo != null)
+            {
+                object[] attrs = PropertyInfo.GetCustomAttributes(typeof(System.Runtime.Serialization.IgnoreDataMemberAttribute), false);
+                if (attrs != null && attrs.Length > 0)
+                {
+                    this.Ignore();
+                }                
+            }
         }
 
         /// <summary>
